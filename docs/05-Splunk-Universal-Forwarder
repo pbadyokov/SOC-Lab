@@ -1,0 +1,151 @@
+# Splunk Universal Forwarder Configuration
+
+## Overview
+
+The Splunk Universal Forwarder is a lightweight agent responsible for collecting Windows Event Logs and forwarding them to Splunk Enterprise.
+
+Unlike Splunk Enterprise, the Universal Forwarder performs no indexing or searching. Its sole purpose is to reliably collect endpoint telemetry and deliver it to a central SIEM.
+
+---
+
+# Purpose
+
+The Universal Forwarder enables centralized log collection by continuously monitoring Windows Event Logs and forwarding newly generated events.
+
+This architecture closely resembles enterprise environments where thousands of endpoints send telemetry to one or more SIEM servers.
+
+---
+
+# Environment
+
+| Component | Value |
+|-----------|-------|
+| Operating System | Windows 10 |
+| Product | Splunk Universal Forwarder |
+| Destination | 127.0.0.1 |
+| Receiving Port | 9997 |
+
+---
+
+# Installation
+
+The following steps were performed:
+
+1. Installed Splunk Universal Forwarder.
+2. Configured the receiving indexer.
+
+Receiving Indexer:
+
+127.0.0.1:9997
+
+Since Splunk Enterprise is installed on the same virtual machine, localhost communication was used.
+
+---
+
+# Event Collection
+
+The Universal Forwarder was configured to monitor the following Windows Event Logs:
+
+- Security
+- System
+- Application
+- Microsoft-Windows-Sysmon/Operational
+
+Configuration was performed through the `inputs.conf` file.
+
+Example:
+
+```ini
+[WinEventLog://Security]
+disabled = 0
+
+[WinEventLog://System]
+disabled = 0
+
+[WinEventLog://Application]
+disabled = 0
+
+[WinEventLog://Microsoft-Windows-Sysmon/Operational]
+disabled = 0
+```
+
+---
+
+# Event Flow
+
+Application Executes
+
+↓
+
+Sysmon Generates Event
+
+↓
+
+Windows Event Log
+
+↓
+
+Splunk Universal Forwarder
+
+↓
+
+TCP 9997
+
+↓
+
+Splunk Enterprise
+
+↓
+
+Indexed Event
+
+---
+
+# Troubleshooting
+
+## Issue
+
+Sysmon events were not being forwarded.
+
+The Splunk logs reported:
+
+```
+Could not subscribe to the event log channel
+ErrorCode=5 (Access Denied)
+```
+
+---
+
+## Root Cause
+
+The Splunk Universal Forwarder service did not have sufficient permissions to subscribe to the Sysmon event channel.
+
+---
+
+## Resolution
+
+The Splunk Universal Forwarder service was configured to run using the **Local System** account.
+
+After restarting the service, Sysmon telemetry was successfully forwarded to Splunk Enterprise.
+
+---
+
+# Verification
+
+Successful operation was confirmed by:
+
+- Windows Event Logs appearing in Splunk
+- Sysmon events successfully indexed
+- Continuous forwarding of endpoint telemetry
+
+---
+
+# Skills Demonstrated
+
+- Endpoint Telemetry Collection
+- Splunk Universal Forwarder
+- Windows Event Logs
+- Sysmon Integration
+- SIEM Data Ingestion
+- Windows Service Configuration
+- Log Pipeline Troubleshooting
