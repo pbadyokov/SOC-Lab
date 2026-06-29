@@ -1,0 +1,146 @@
+# Sysmon Installation and Configuration
+
+## Overview
+
+Sysmon (System Monitor) is a Windows system service and device driver developed by Microsoft Sysinternals. It provides detailed system activity monitoring that is not available through the default Windows Event Logs.
+
+Unlike standard Windows logging, Sysmon records rich telemetry such as process creation, network connections, registry modifications, driver loading, file creation, DNS queries, and process access events.
+
+These events are invaluable for threat hunting, malware analysis, digital forensics, and incident response.
+
+---
+
+## Purpose
+
+The goal of installing Sysmon in this lab is to generate detailed endpoint telemetry that will later be collected by Splunk Enterprise and used to detect malicious activity.
+
+---
+
+## Environment
+
+| Component | Value |
+|-----------|-------|
+| Operating System | Windows 10 |
+| Virtualization | Oracle VirtualBox |
+| SIEM | Splunk Enterprise |
+| Log Collector | Splunk Universal Forwarder |
+| Sysmon Version | (version installed) |
+
+---
+
+## Installation
+
+Downloaded Sysmon from the Microsoft Sysinternals website.
+
+Extracted the archive.
+
+Opened an elevated Command Prompt.
+
+Installed Sysmon using:
+
+```cmd
+Sysmon64.exe -accepteula -i sysmonconfig.xml
+```
+
+---
+
+## Configuration
+
+The lab uses the SwiftOnSecurity Sysmon configuration.
+
+The configuration filters unnecessary events while enabling high-value telemetry commonly used by SOC analysts.
+
+Examples include:
+
+- Process Creation
+- Network Connections
+- Driver Loading
+- Registry Changes
+- File Creation
+- DNS Queries
+
+---
+
+## Verification
+
+Successful installation was verified by checking:
+
+Event Viewer
+
+Applications and Services Logs
+
+Microsoft
+
+Windows
+
+Sysmon
+
+Operational
+
+New Event ID 1 entries were generated after launching applications.
+
+---
+
+## Integration with Splunk
+
+Sysmon does not send events directly to Splunk.
+
+The event flow is:
+
+Windows Activity
+
+↓
+
+Sysmon Driver
+
+↓
+
+Sysmon Service
+
+↓
+
+Windows Event Log
+
+↓
+
+Splunk Universal Forwarder
+
+↓
+
+Splunk Enterprise
+
+This architecture closely resembles enterprise environments where endpoint telemetry is forwarded to a centralized SIEM.
+
+---
+
+## Troubleshooting
+
+### Issue
+
+Splunk Universal Forwarder was unable to subscribe to the Sysmon channel.
+
+Error:
+
+```
+Could not subscribe to the event log channel
+ErrorCode=5 (Access Denied)
+```
+
+### Resolution
+
+Configured the Splunk Universal Forwarder service to run under the Local System account and restarted the service.
+
+After restarting, Sysmon events were successfully ingested into Splunk.
+
+---
+
+## Skills Demonstrated
+
+- Windows Endpoint Logging
+- Microsoft Sysinternals
+- Sysmon Configuration
+- Windows Event Viewer
+- Splunk Universal Forwarder
+- Splunk Enterprise
+- Log Collection Pipeline
+- Windows Troubleshooting
