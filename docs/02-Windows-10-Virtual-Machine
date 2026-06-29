@@ -1,0 +1,99 @@
+# Windows 10 Endpoint Deployment
+
+## Overview
+
+Windows 10 serves as the primary monitored endpoint within the SOC lab.
+
+This virtual machine hosts:
+
+- Splunk Enterprise
+- Splunk Universal Forwarder
+- Sysmon
+
+The machine will later become a domain-joined workstation managed through Active Directory.
+
+---
+
+# VM Configuration
+
+| Setting | Value |
+|----------|-------|
+| Operating System | Windows 10 |
+| Virtualization | Oracle VirtualBox |
+| Memory | 4 GB |
+| CPU | 2 vCPUs |
+| Disk | 100 GB Dynamic |
+
+---
+
+# Network Configuration
+
+Adapter 1
+
+Host-Only Adapter
+
+Purpose:
+
+Communication with:
+
+- Domain Controller
+- Kali Linux
+
+Adapter 2
+
+NAT
+
+Purpose:
+
+Internet access
+
+- Windows Updates
+- Splunk downloads
+- GitHub
+- Sysmon
+
+---
+
+# Installation
+
+Created a new Windows 10 virtual machine.
+
+Installed Windows 10.
+
+Installed VirtualBox Guest Additions.
+
+Configured networking.
+
+Verified internet connectivity.
+
+Verified communication with other virtual machines.
+
+---
+
+# Purpose
+
+This endpoint represents a standard corporate workstation.
+
+It will generate endpoint telemetry that will later be collected by Splunk Enterprise for security monitoring.
+
+Future attack simulations will target this endpoint.
+
+---
+
+# Future Configuration
+
+- Join Active Directory
+- Install Sysmon
+- Install Splunk Enterprise
+- Install Universal Forwarder
+- Create test users
+- Simulate attacks
+
+---
+
+# Skills Demonstrated
+
+- Virtual Machine Deployment
+- Windows Installation
+- Virtual Networking
+- Endpoint Configuration
