@@ -1,0 +1,85 @@
+# SOC Home Lab Architecture
+
+## Overview
+
+This project documents the construction of a personal Security Operations Center (SOC) home lab designed to simulate an enterprise Windows environment.
+
+The objective is to gain practical experience with:
+
+- Windows Endpoint Monitoring
+- Active Directory
+- SIEM Administration
+- Log Collection
+- Threat Detection
+- Attack Simulation
+- Incident Investigation
+
+The lab is built entirely inside Oracle VirtualBox.
+
+---
+
+# Hardware
+
+| Component | Specification |
+|-----------|---------------|
+| CPU | AMD Ryzen 7 4700H |
+| RAM | 16 GB |
+| Storage | 1 TB SSD |
+| Hypervisor | Oracle VirtualBox |
+
+---
+
+# Virtual Machines
+
+| Machine | Role |
+|---------|------|
+| Kali Linux | Attack Machine |
+| Windows 10 | Endpoint + Splunk SIEM |
+| Windows Server 2022 | Domain Controller |
+
+---
+
+# Planned Technologies
+
+- Windows Server 2022
+- Active Directory
+- DNS
+- Group Policy
+- Sysmon
+- Splunk Enterprise
+- Splunk Universal Forwarder
+- PowerShell
+- Kali Linux
+- Atomic Red Team
+- Sigma Rules
+
+---
+
+# Lab Network
+
+The virtual environment uses a Host-Only Adapter for internal communication between virtual machines.
+
+Internet access is provided using a NAT adapter where required.
+
+
+# Objectives
+
+Build a realistic SOC environment capable of:
+
+- Centralized log collection
+- Active Directory administration
+- Attack simulation
+- Detection engineering
+- Threat hunting
+- Incident response
+
+---
+
+# Skills Demonstrated
+
+- Virtualization
+- Windows Administration
+- Enterprise Networking
+- Active Directory
+- SIEM Deployment
+- Endpoint Monitoring
