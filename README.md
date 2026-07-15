@@ -1,2 +1,21 @@
-# Home-SOC-Lab
-This is my custom SOC Home Lab used for learning and entertainment.
+SOC Home Lab
+
+Overview
+
+Architecture
+
+Technologies
+
+Lab Topology
+
+Documentation
+
+Projects
+
+Screenshots
+
+Future Work
+
+MITRE ATT&CK Coverage
+
+Skills Demonstrated
