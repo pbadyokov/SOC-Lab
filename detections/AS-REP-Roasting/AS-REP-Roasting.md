@@ -138,7 +138,7 @@ index=* host=DC01 EventCode=4768
 
 # Detection Logic
 
-An attacker requesting AS-REP responses for accounts without Kerberos preauthentication generates Kerberos Authentication Service (4768) events.
+An attacker requesting AS-REP responses for accounts without Kerberos preauthentication generates Kerberos Authentication Service (4768) events. They occur with Pre-Authentication-Type 0.
 
 Repeated requests from a workstation for multiple accounts may indicate reconnaissance or AS-REP Roasting activity.
 
