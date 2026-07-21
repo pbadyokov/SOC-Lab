@@ -60,7 +60,7 @@ The following account was configured with:
 Example:
 
 ```
-legacy_backup
+svc_legacy
 ```
 
 ---
@@ -81,7 +81,7 @@ jmiller
 svc_sql
 svc_backup
 svc_web
-legacy_backup
+svc_legacy
 ```
 
 ### Request AS-REP Hashes
