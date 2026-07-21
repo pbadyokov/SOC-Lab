@@ -1,18 +1,22 @@
-            Detection Summary                          
------------------- | ------------------------ 
-Attack             | Kerberoasting            
-MITRE ATT&CK       | T1558.003                
-Windows Event IDs  | 4769                     
-Data Source        | Windows Security Log     
-Detection Platform | Splunk Enterprise          
-Difficulty         | ⭐⭐☆☆☆                 
-Status             | ✅ Successfully Simulated 
-
 # Kerberoasting Detection
 
-## Objective
+## Detection Summary
 
-Detect Kerberoasting activity by monitoring Kerberos service ticket requests (Event ID 4769) generated from user accounts requesting service tickets for Service Principal Names (SPNs).
+| Field | Value |
+|-------|-------|
+| Attack | Kerberoasting |
+| MITRE ATT&CK | T1558.003 |
+| Tactic | Credential Access |
+| Platform | Active Directory |
+| Detection Platform | Splunk Enterprise |
+| Primary Event ID | 4769 |
+| Status | ✅ Successfully Simulated |
+
+---
+
+# Objective
+
+Demonstrate and detect a Kerberoasting attack in an Active Directory environment by requesting Kerberos service tickets (TGS) for Service Principal Names (SPNs) and identifying the resulting Windows Security events in Splunk.
 
 ---
 
@@ -30,48 +34,75 @@ Detect Kerberoasting activity by monitoring Kerberos service ticket requests (Ev
 |---------|------|
 | Kali Linux | Attacker |
 | DC01 | Domain Controller |
-| WIN10 | Splunk Enterprise |
+| WIN10 | Splunk Enterprise & Universal Forwarder |
 
-Domain:
+**Domain**
 
+```
 corp.local
+```
 
 ---
 
 # Attack Overview
 
-Kerberoasting abuses Kerberos authentication by requesting service tickets associated with Service Principal Names (SPNs). Since the tickets are encrypted using the service account's NTLM hash, they can be exported and cracked offline.
+Kerberoasting is a credential access technique that targets Active Directory service accounts associated with a Service Principal Name (SPN).
+
+An authenticated domain user can request a Kerberos Ticket Granting Service (TGS) ticket for a service account. The ticket is encrypted using the service account's password hash and can be extracted and cracked offline to recover the plaintext password.
+
+Unlike many attacks, Kerberoasting requires only a standard domain user account and does not require administrative privileges.
+
+---
+
+# Lab Configuration
+
+A service account with an SPN was configured in Active Directory.
+
+Example SPN:
+
+```
+MSSQLSvc/sql.corp.local:1433
+```
 
 ---
 
 # Attack Execution
 
-Tool:
+## Tool
 
 Impacket
 
-Command:
+## Command
 
-bash
-`impacket-GetUserSPNs 'CORP.LOCAL/rsmith:P@ssword123!' \
+```bash
+impacket-GetUserSPNs 'CORP.LOCAL/rsmith:P@ssword123!' \
 -dc-ip 192.168.56.10 \
--request`
+-request
+```
 
-Result:
+## Result
 
-Successfully obtained a Kerberos TGS hash.
+The attack successfully requested a Kerberos service ticket and returned a crackable Kerberos TGS hash.
+
+Example:
+
+```
+$krb5tgs$23$...
+```
 
 ---
 
 # Evidence Collected
 
-Windows Security Log
+## Windows Security Log
 
-Event ID:
+**Event ID**
 
+```
 4769
+```
 
-Relevant fields:
+**Relevant Fields**
 
 - Account Name
 - Service Name
@@ -82,76 +113,95 @@ Relevant fields:
 
 # Splunk Detection
 
-Basic query
+## Basic Search
 
 ```spl
 index=* host=DC01 EventCode=4769
 ```
 
-RC4 Detection
+## Detection Query
 
 ```spl
 index=* host=DC01 EventCode=4769 Ticket_Encryption_Type=0x17
-| stats count values(Service_Name) by Account_Name Client_Address
+| stats count values(Service_Name) AS Service values(Client_Address) AS Source_IP BY Account_Name
+| sort - count
 ```
 
 ---
 
 # Detection Logic
 
-Repeated service ticket requests using RC4 encryption from a workstation may indicate Kerberoasting activity.
+Kerberoasting generates Kerberos Service Ticket requests (Event ID 4769).
+
+A high volume of TGS requests, especially using RC4 encryption (0x17), originating from a single client may indicate Kerberoasting activity.
+
+While RC4 is not malicious by itself, unexpected or excessive requests for multiple service accounts should be investigated.
+
+---
+
+# Detection Workflow
+
+```
+Kali Linux
+        │
+        ▼
+Kerberos TGS Request
+        │
+        ▼
+Domain Controller (DC01)
+        │
+        ▼
+Windows Security Event 4769
+        │
+        ▼
+Splunk Universal Forwarder
+        │
+        ▼
+Splunk Enterprise
+        │
+        ▼
+Detection
+```
 
 ---
 
 # MITRE Mapping
 
-Credential Access
-
-T1558.003
+| Tactic | Technique |
+|---------|-----------|
+| Credential Access | T1558.003 – Kerberoasting |
 
 ---
 
 # Mitigation
 
-- Use AES-only Kerberos encryption
-- Use gMSAs where possible
-- Rotate service account passwords
-- Monitor unusual 4769 activity
-- Remove unnecessary SPNs
+- Use strong, long passwords for service accounts.
+- Prefer Group Managed Service Accounts (gMSAs).
+- Disable RC4 where possible and enforce AES encryption.
+- Audit Service Principal Names (SPNs) regularly.
+- Monitor abnormal volumes of Event ID 4769.
+- Rotate service account passwords periodically.
 
 ---
 
 # Screenshots
 
-- Impacket output
-- Splunk search
-- Event Viewer
-- Detection dashboard
+- `impacket-getuserspns.png` – Successful Kerberoasting attack and extracted TGS hash.
+- `detection-search-results.png` – Splunk detection query and matching Event ID 4769 results.
+- `event-viewer-4769.png` – Windows Security Log showing Event ID 4769 on the Domain Controller.
 
 ---
 
 # Lessons Learned
 
-This lab demonstrates the full attack lifecycle:
+This lab demonstrated the complete Kerberoasting attack lifecycle in a controlled Active Directory environment.
 
-Kali
+Key takeaways:
 
-↓
+- Successfully simulated Kerberoasting using Impacket.
+- Generated Windows Security Event ID 4769.
+- Collected telemetry using the Splunk Universal Forwarder.
+- Detected the activity in Splunk Enterprise using custom SPL queries.
+- Mapped the attack to MITRE ATT&CK T1558.003 and documented potential mitigations.
 
-Active Directory
-
-↓
-
-Windows Event Logs
-
-↓
-
-Universal Forwarder
-
-↓
-
-Splunk Enterprise
-
-↓
-
-Detection
+This exercise reinforced the importance of monitoring Kerberos service ticket activity and properly securing service accounts within Active Directory environments.
