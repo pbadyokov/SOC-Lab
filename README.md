@@ -62,9 +62,9 @@ Deployment notes capture earlier stages of the build. Consult the later investig
 
 ## Evidence and Limitations
 
-Each exercise keeps its available images in a `screenshots/` subdirectory. Missing screenshots are identified rather than represented by broken links. The Registry Run Key case explicitly labels an AI-edited illustration and distinguishes it from original evidence.
+Each exercise keeps its available images in a `screenshots/` subdirectory. Missing screenshots are identified rather than represented by broken links.
 
-The AD group membership case records a timestamp inconsistency and a temporary gap in event availability. Unverified explanations remain identified as such.
+The AD group membership case documents a temporary gap in event availability and a corrected screenshot-selection error. The retained 4728 screenshot shows a separate addition; replacement with the original addition screenshot is pending. The earlier clock-problem hypothesis has been withdrawn.
 
 ## Skills Practiced
 
@@ -80,7 +80,7 @@ The AD group membership case records a timestamp inconsistency and a temporary g
 - Validate and tune reusable detection rules against benign activity.
 - Add tested Sigma rules and scheduled alerts.
 - Build dashboards for investigation and telemetry health.
-- Improve clock consistency and forwarding diagnostics.
+- Improve forwarding diagnostics and telemetry health monitoring.
 - Extend endpoint visibility with EDR and additional lab systems.
 
 All simulations are intended for systems owned or explicitly authorized for testing.
