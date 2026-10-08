@@ -433,57 +433,43 @@ Possible defensive measures include:
 
 PowerShell Operational logging and Script Block Logging were enabled and verified.
 
-```text
-screenshots/01-telemetry-setup.png
-```
+![telemetry setup](screenshots/01-telemetry-setup.png)
 
 ### PowerShell Test Execution
 
 Benign PowerShell execution using `-NoProfile` and `-ExecutionPolicy Bypass`.
 
-```text
-screenshots/02-powershell-execution.png
-```
+![powershell execution](screenshots/02-powershell-execution.png)
 
 ### Event ID 4104 — Event Viewer
 
 PowerShell Script Block Logging showing the executed `Get-Process` command.
 
-```text
-screenshots/03-event-viewer-4104.png
-```
+![event viewer 4104](screenshots/03-event-viewer-4104.png)
 
 ### PowerShell Encoded Command Preparation
 
 Creation of a harmless PowerShell payload and conversion to Base64.
 
-```text
-screenshots/04-powershell-encoded-command.png
-```
+![powershell script](screenshots/04-powershell-script.png)
 
 ### Event ID 4104 — Splunk
 
 PowerShell Operational telemetry forwarded to Splunk showing Script Block Logging.
 
-```text
-screenshots/05-splunk-4104-detection.png
-```
+![splunk 4104 deteciton](screenshots/05-splunk-4104-deteciton.png)
 
 ### Event ID 4104 — Encoded PowerShell
 
 Script Block Logging showing the invocation of PowerShell with `-EncodedCommand`.
 
-```text
-screenshots/06-splunk-4104-encoded-command.png
-```
+![splunk 4104 encoded detection](screenshots/06-splunk-4104-encoded-detection.png)
 
 ### Event ID 4688 — Encoded PowerShell Process
 
 Windows Security Event ID `4688` showing the PowerShell process and the Base64-encoded command line.
 
-```text
-screenshots/07-splunk-4688-encoded-command.png
-```
+![splunk 4688 powershell encoded detection](screenshots/07-splunk-4688-powershell-encoded-detection.png)
 
 ---
 

@@ -399,41 +399,31 @@ Possible defensive measures include:
 
 Windows auditing configured for Process Creation and Other Object Access Events.
 
-```text
-screenshots/01-audit-policy-configuration.png
-```
+![audit policy configuration](screenshots/01-audit-policy-configuration.png)
 
 ### Persistence Script Creation
 
 Creation and verification of the benign persistence script.
 
-```text
-screenshots/02-persistence-script.png
-```
+![persistence script](screenshots/02-persistence-script.png)
 
 ### Scheduled Task Creation
 
 Creation of the `PersistenceMechanism` scheduled task using `schtasks.exe`.
 
-```text
-screenshots/03-scheduled-task-creation.png
-```
+![scheduled task creation](screenshots/03-scheduled-task-creation.png)
 
 ### Event ID 4688 — Process Creation
 
 Splunk detection showing `schtasks.exe` executed by `socadmin` with the `/create` argument.
 
-```text
-screenshots/04-event-4688-schtasks.png
-```
+![event 4688 schtasks](screenshots/05-event-4688-schtasks.png)
 
 ### Event ID 4698 — Scheduled Task Created
 
 Windows Security Event ID `4698` showing the registered task configuration, logon trigger, command, arguments, and SYSTEM execution context.
 
-```text
-screenshots/05-event-4698-task-created.png
-```
+![event 4698 schtask craeted](screenshots/04-event-4698-schtask-craeted.jpeg)
 
 ---
 

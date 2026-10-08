@@ -700,37 +700,37 @@ Historical Security logs and Splunk events were retained for analysis.
 
 ## Screenshots
 
-All seven screenshots are stored in the same directory as this README.
+All seven screenshots are stored in the `screenshots/` subdirectory.
 
 ### 01 — Audit Policy Verification
 
 Successful auditing enabled for User Account Management and Security Group Management.
 
-![Audit policy verification](01-dc01-auditpol-check.png)
+![Audit policy verification](screenshots/01-dc01-auditpol-check.png)
 
 ### 02 — Test Account in Active Directory
 
 SOC Lab Test visible in the standard Users container.
 
-![Test account in Active Directory](02-dc01-new-acc-creation.png)
+![Test account in Active Directory](screenshots/02-dc01-new-acc-creation.png)
 
 ### 03 — Account State and SID Verification
 
 PowerShell output showing the account enabled, its password timestamp and SID.
 
-![Account state verification](03-dc01-newacc-check.png)
+![Account state verification](screenshots/03-dc01-newacc-check.png)
 
 ### 04 — Event 4720: Account Creation
 
 Security event identifying the creating administrator and the new account.
 
-![Account creation event](04-splunk-newacc-discovery.png)
+![Account creation event](screenshots/04-splunk-newacc-discovery.png)
 
 ### 05 — Event 4728: Addition to Domain Admins
 
 Security event showing the actor, added member and privileged group.
 
-![Domain Admins membership addition](05-splunk-4728-event.png)
+![Domain Admins membership addition](screenshots/05-splunk-4728-event.png)
 
 ### 06 — Event 4729: Removal from Domain Admins
 
@@ -738,13 +738,13 @@ Removal event retrieved in Splunk with the same member and group SIDs.
 
 The displayed timestamp inconsistency is discussed in the timeline section.
 
-![Domain Admins membership removal](06-splunk-4729-event.png)
+![Domain Admins membership removal](screenshots/06-splunk-4729-event.png)
 
 ### 07 — Event 4726: Account Deletion
 
 Deletion event identifying the same test account by SID.
 
-![Test account deletion](07-splunk-4726-account-deletion.png)
+![Test account deletion](screenshots/07-splunk-4726-account-deletion.png)
 
 ---
 

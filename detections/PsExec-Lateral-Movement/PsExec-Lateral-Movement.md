@@ -375,33 +375,25 @@ Possible defensive measures include:
 
 Successful remote command execution using Impacket PsExec.
 
-```text
-screenshots/01-psexec-shell.png
-```
+![impacket output psexec](screenshots/01-impacket-output-psexec.png)
 
 ### Authentication and Service Creation
 
 Correlation between network authentication and service installation.
 
-```text
-screenshots/02-splunk-correlating-events.png
-```
+![splunk correlating events](screenshots/02-splunk-correlating-events.png)
 
 ### SMB Administrative Share Activity
 
 Event IDs `5140` and `5145` showing `ADMIN$` access and the temporary executable.
 
-```text
-screenshots/03-smb-shares-telemetry-splunk.png
-```
+![smb shares telemetry splunk](screenshots/03-smb-shares-telemetry-splunk.png)
 
 ### Sysmon Process Execution
 
 Sysmon Event ID `1` showing the temporary executable launched by `services.exe` as SYSTEM.
 
-```text
-screenshots/04-sysmon-process-execution.png
-```
+![sysmon event 1](screenshots/04-sysmon-event-1.png)
 
 ---
 

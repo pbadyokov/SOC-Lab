@@ -675,55 +675,55 @@ Removing the Run value prevents future execution through that entry. It does not
 
 ## Screenshots
 
-The screenshots below are stored in the same directory as this README.
+The screenshots below are stored in the `screenshots/` subdirectory.
 
 ### Script and Registry Setup
 
 Creation of the lab directory, script, startup command and Registry Run value.
 
-![Script and Registry setup](01-setup.png)
+![Script and Registry setup](screenshots/01-setup.png)
 
 ### Registry Modification Counts by Process
 
 Exploratory Event `13` search identifying the processes responsible for Registry modifications in the selected window.
 
-![Registry modification counts](02-splunk-image-count.png)
+![Registry modification counts](screenshots/02-splunk-image-count.png)
 
 ### PowerShell Registry Persistence Configuration
 
 Event `13` showing PowerShell modifying the Run value and the fully expanded command stored in `Details`.
 
-![PowerShell Registry persistence](03-splunk-powershell-persistence.png)
+![PowerShell Registry persistence](screenshots/03-splunk-powershell-persistence.png)
 
 ### Registry Configuration Script Block
 
 Event `4104` containing `New-ItemProperty` and the `$startupCommand` reference.
 
-![Registry configuration script block](04-splunk-event-4104.png)
+![Registry configuration script block](screenshots/04-splunk-event-4104.png)
 
 ### Startup Command Preparation
 
 Three script blocks showing assignment, console evaluation and use of the startup command.
 
-![Startup command preparation](05-splunk-startupcommand.png)
+![Startup command preparation](screenshots/05-splunk-startupcommand.png)
 
 ### Script Output After Sign-in
 
 The proof file containing the timestamp written by the script.
 
-![Script output after sign-in](06-script-execution.png)
+![Script output after sign-in](screenshots/06-script-execution.png)
 
 ### PowerShell Process Creation
 
 Event `1` showing the matching script argument, execution user and `explorer.exe` parent.
 
-![PowerShell startup process](07-splunk-powershell-startup-proof.png)
+![PowerShell startup process](screenshots/07-splunk-powershell-startup-proof.png)
 
 ### Registry Value Removal
 
 Removal of the test value and the expected property-not-found verification result.
 
-![Registry value removal](08-reg-deletion.png)
+![Registry value removal](screenshots/08-reg-deletion.png)
 
 ---
 

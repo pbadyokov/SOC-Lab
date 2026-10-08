@@ -186,9 +186,17 @@ Detection
 
 # Screenshots
 
-- `impacket-getuserspns.png` – Successful Kerberoasting attack and extracted TGS hash.
-- `detection-search-results.png` – Splunk detection query and matching Event ID 4769 results.
-- `event-viewer-4769.png` – Windows Security Log showing Event ID 4769 on the Domain Controller.
+### Impacket Output
+
+![Impacket output](screenshots/01-impacket-output.png)
+
+### Splunk Search
+
+![Splunk search](screenshots/02-splunk-search.png)
+
+### Event 4769
+
+![Event 4769](screenshots/03-event-4769.png)
 
 ---
 

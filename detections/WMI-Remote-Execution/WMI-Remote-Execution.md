@@ -271,25 +271,19 @@ Possible defensive measures include:
 
 Successful remote command execution using Impacket WMIExec.
 
-```text
-screenshots/01-wmi-console.png
-```
+*The WMI execution console screenshot is not included in this repository.*
 
 ### Successful Network Authentication
 
 Event ID `4624` showing successful Logon Type 3 authentication.
 
-```text
-screenshots/02-successful-logon.png
-```
+![logon data](screenshots/02-logon-data.png)
 
 ### Sysmon Process Creation
 
 Sysmon Event ID `1` showing `WmiPrvSE.exe` spawning `cmd.exe`.
 
-```text
-screenshots/03-sysmon-process-creation.png
-```
+![image creation](screenshots/03-image-creation.png)
 
 ---
 

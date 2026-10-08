@@ -434,19 +434,19 @@ Deleting the value does not terminate an already running Notepad process.
 
 Creation and verification of the startup value pointing to Notepad.
 
-![Registry Run value creation](<regkey-creation(1).png>)
+![Registry Run value creation](screenshots/01-regkey-creation.png)
 
 ### Event ID 13 — Registry Value Set
 
 Sysmon telemetry showing the process, user, Registry location and configured executable.
 
-![Registry value modification event](splunk-regkey-registration-event.png)
+![Registry value modification event](screenshots/03-splunk-regkey-registration-event.png)
 
 ### General Run Key Detection
 
 Splunk search showing the lab entry alongside other startup modifications.
 
-![General Run key detection](splunk-regkey-reg.png)
+![General Run key detection](screenshots/02-splunk-regkey-reg.png)
 
 *The highlighted image is an AI-edited illustration. The original Event ID 13 screenshot above is the authoritative evidence for the Registry event.*
 
@@ -454,13 +454,13 @@ Splunk search showing the lab entry alongside other startup modifications.
 
 Splunk telemetry showing Notepad executing under `CORP\socadmin` with `explorer.exe` as its parent.
 
-![Notepad process creation](<splunk-notepad-finding(1).png>)
+![Notepad process creation](screenshots/04-splunk-notepad-finding.png)
 
 ### Registry Value Removal
 
 Successful deletion of the test value and verification that it no longer existed.
 
-![Registry value cleanup](regkey-deletion.png)
+![Registry value cleanup](screenshots/05-regkey-deletion.png)
 
 ---
 

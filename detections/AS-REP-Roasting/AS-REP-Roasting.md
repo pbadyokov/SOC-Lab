@@ -163,9 +163,15 @@ T1558.004
 
 # Screenshots
 
-- Impacket GetNPUsers output
-- Splunk detection search
-- Event Viewer Event ID 4768
+### Impacket Output
+
+![Impacket output](screenshots/01-impacket-output.png)
+
+### Splunk Detection
+
+![Splunk detection](screenshots/02-splunk-detection.png)
+
+*A separate Event Viewer screenshot is not included in this repository.*
 
 ---
 
