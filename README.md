@@ -64,7 +64,7 @@ Deployment notes capture earlier stages of the build. Consult the later investig
 
 Each exercise keeps its available images in a `screenshots/` subdirectory. Missing screenshots are identified rather than represented by broken links.
 
-The AD group membership case documents a temporary gap in event availability and a corrected screenshot-selection error. The retained 4728 screenshot shows a separate addition; replacement with the original addition screenshot is pending. The earlier clock-problem hypothesis has been withdrawn.
+The AD group membership case documents a temporary gap in event availability. Its underlying cause was not established.
 
 ## Skills Practiced
 

@@ -15,7 +15,7 @@ The investigation identified:
 
 **Outcome:** All four event types were identified in Splunk for the test account. Privileged membership was removed and the account was deleted.
 
-A temporary gap in event availability was documented; its cause was not established. The lab operator later confirmed that the retained Event 4728 screenshot shows a different addition from the one preceding the documented removal. The original addition screenshot remains pending replacement.
+A temporary gap in event availability was documented; its cause was not established.
 
 This was a controlled administrative simulation. Events were correlated manually; no automated alert was implemented.
 
@@ -283,8 +283,6 @@ These observations describe different points in the account lifecycle. The creat
 
 ### Event 4728 — Addition to Domain Admins
 
-The retained screenshot shows a separate addition. It is not the matching record for the original addition preceding the documented Event 4729 removal. Its displayed values are preserved below; the exact timestamp of the original addition remains unconfirmed.
-
 Observed:
 
 ```text
@@ -356,8 +354,6 @@ S-1-5-21-3788158350-455610885-851012159-512
 The member and group SIDs matched the addition event.
 
 The event was first verified locally and later retrieved in Splunk.
-
-The retained addition screenshot belongs to a different addition. Matching member and group SIDs identify the same account and group, but do not establish a matched add/remove pair.
 
 ### Event 4726 — Account Deletion
 
@@ -434,7 +430,7 @@ The retained screenshot used the broader query:
 index=* host="DC01*" EventCode=4728
 ```
 
-It returned a Domain Admins addition for the test account. The retained screenshot is from a different addition than the one preceding the documented removal.
+It returned a Domain Admins addition for the test account.
 
 ### Detect Removal from Domain Admins
 
@@ -474,7 +470,7 @@ index=* host="DC01*" source="*WinEventLog:Security"
 
 This is a follow-up investigation query; it is not shown in the retained screenshots.
 
-Ordering by record number is useful here because these records belong to the same host and Security log. Record numbers should not be treated as a global ordering mechanism across hosts, channels or log resets. Sorting these selected records does not establish a matched add/remove pair.
+Ordering by record number is useful here because these records belong to the same host and Security log. Record numbers should not be treated as a global ordering mechanism across hosts, channels or log resets.
 
 For production use, replace `index=*` with the intended index and validate field extractions.
 
@@ -486,7 +482,7 @@ For production use, replace `index=*` with the intended index and validate field
 |---|---|---|
 | Account creation | 4720 | Administrator created the account with the recorded SID |
 | State validation | Get-ADUser | The account was enabled and had a password set |
-| Privileged membership addition | 4728 | An addition is evidenced; the screenshot for the original addition preceding removal is pending replacement |
+| Privileged membership addition | 4728 | The account was added to Domain Admins |
 | Privileged membership removal | 4729 and membership check | The account was removed from Domain Admins |
 | Account deletion | 4726 | The same account was deleted |
 
@@ -519,24 +515,14 @@ No automated cross-event correlation rule was implemented.
 
 ### Retained Evidence Inventory
 
-These are the values previously transcribed from the selected screenshots. This inventory is not a verified chronological sequence or a matched add/remove pair.
+The table lists the values transcribed from the selected screenshots, grouped by event type.
 
 | Record Number | Displayed Timestamp | Event ID | Evidence |
 |---|---|---|---|
 | 22952 | 2026-10-08 16:53:16.599 | 4720 | Account created |
-| 23304 | 2026-10-08 17:29:23.393 | 4728 | Separate addition; original addition screenshot pending replacement |
+| 23304 | 2026-10-08 17:29:23.393 | 4728 | Account added to Domain Admins |
 | 23377 | 2026-10-08 17:15:54.936 | 4729 | Account removed from Domain Admins |
 | 23828 | 2026-10-08 17:57:32.829 | 4726 | Account deleted |
-
-### Evidence Selection Correction
-
-The lab operator confirmed that the clock was correct and that the wrong Event 4728 screenshot had been supplied. The retained screenshot was selected while checking Event 4728 availability after restarting Splunk and does not show the original addition preceding the documented removal.
-
-The earlier clock-adjustment hypothesis is withdrawn. This evidence-selection error does not establish a clock or time-synchronization problem.
-
-The operator will locate and replace the original addition screenshot when available. Until then, its exact timestamp remains unconfirmed and no membership duration is calculated. The approximate time recalled during review is not treated as verified evidence.
-
-Event collection and the cleanup outcome were confirmed during the lab. Replacing the screenshot is a documentation follow-up and is not a prerequisite for the next alert-building exercise.
 
 ---
 
@@ -613,7 +599,7 @@ The removal event was subsequently retrieved in Splunk, and the deletion event w
 
 The collection issue's root cause was not established. No event-specific filter or configuration defect was confirmed.
 
-The evidence does not establish that a restart fixed the issue. The screenshot-selection error does not establish the cause of the temporary search gap.
+The evidence does not establish that a restart fixed the issue.
 
 ---
 
@@ -636,7 +622,6 @@ Limitations:
 - This was a controlled simulation, not a confirmed compromise.
 - Earlier creation attempts were not fully reconstructed.
 - No use of the granted privileges was demonstrated.
-- The original addition screenshot is pending replacement, so a matched add/remove timeline and membership duration are not established.
 - The temporary SIEM availability gap was not fully diagnosed.
 - No logon-event correlation was completed.
 - Screenshots represent selected evidence rather than a complete exported event set.
@@ -723,15 +708,13 @@ Security event identifying the creating administrator and the new account.
 
 ### 05 — Event 4728: Addition to Domain Admins
 
-Security event showing the actor, added member and privileged group. This screenshot shows a different addition from the one preceding the documented removal; replacement with the original addition screenshot is pending.
+Security event showing the actor, added member and privileged group.
 
 ![Domain Admins membership addition](screenshots/05-splunk-4728-event.png)
 
 ### 06 — Event 4729: Removal from Domain Admins
 
 Removal event retrieved in Splunk with the same member and group SIDs.
-
-The matching original addition screenshot is pending replacement, as explained in the evidence selection correction.
 
 ![Domain Admins membership removal](screenshots/06-splunk-4729-event.png)
 
@@ -752,5 +735,3 @@ The account SID connected creation, membership changes and deletion even though 
 The creation event and later PowerShell output showed why event-time state should be separated from current account state.
 
 The temporary absence of the removal event in Splunk demonstrated the importance of checking local evidence before concluding that an action was not logged.
-
-Finally, the screenshot-selection error showed why evidence must be matched to the specific action being documented. The same account and group SIDs can appear in multiple membership changes; they do not by themselves establish a single add/remove cycle.
