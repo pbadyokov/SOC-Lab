@@ -448,8 +448,6 @@ Splunk search showing the lab entry alongside other startup modifications.
 
 ![General Run key detection](screenshots/02-splunk-regkey-reg.png)
 
-*The highlighted image is an AI-edited illustration. The original Event ID 13 screenshot above is the authoritative evidence for the Registry event.*
-
 ### Event ID 1 — Process Creation
 
 Splunk telemetry showing Notepad executing under `CORP\socadmin` with `explorer.exe` as its parent.
