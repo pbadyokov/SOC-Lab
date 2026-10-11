@@ -39,7 +39,7 @@ Windows activity generates events in the configured channels. Universal Forwarde
 | [Registry Run Key Persistence](detections/RegKey-Persistence/README.md) | Sysmon 13 and 1 | T1547.001 |
 | [PowerShell and Run Key Persistence](detections/PowerShell-Registry-Run-Key-Persistence/README.md) | PowerShell 4104, Sysmon 13 and 1, script output | T1059.001, T1547.001 |
 | [AD Privileged Group Membership](detections/AD-Privileged-Group-Membership/README.md) | Security 4720, 4728, 4729 and 4726 | T1098.007 |
-| [AD Password Spraying](detections/AD-Password-Spraying/README.md) | Security 4625 and 4776, NetExec output, and a follow-up 4624 search | — |
+| [AD Password Spraying](detections/AD-Password-Spraying/README.md) | Security 4625 and 4776, NetExec output, and a follow-up 4624 search | T1110.003 |
 
 These are documented lab investigations and search examples. They should not be treated as production-ready alerts; automated correlation and deployment are only claimed where explicitly demonstrated.
 

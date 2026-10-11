@@ -16,6 +16,34 @@ NetExec was used from Kali Linux to attempt SMB authentication against DC01 usin
 
 This was a controlled lab simulation. No automated alert was implemented.
 
+---
+
+## Objective
+
+The objective of this lab was to:
+
+- Inspect the domain lockout policy before testing.
+- Enable and verify failure auditing.
+- Simulate one incorrect password against multiple test accounts.
+- Identify failed network logons and NTLM credential-validation failures.
+- Distinguish authentication attempts from their associated audit records.
+- Build and validate an SPL detection using distinct account counts.
+- Check for matching successful logons after the simulation.
+- Save the detection as a reusable report.
+- Delete the test accounts after validation.
+
+---
+
+## MITRE ATT&CK
+
+| Technique | ID | Relevance |
+|---|---|---|
+| Brute Force: Password Spraying | [T1110.003](https://attack.mitre.org/techniques/T1110/003/) | One password attempted against multiple accounts |
+
+This mapping describes the simulated credential-access behavior. The attempts were performed against dedicated accounts in an authorized lab.
+
+---
+
 ## Lab Environment
 
 | Component | Role | Address |
@@ -29,7 +57,27 @@ This was a controlled lab simulation. No automated alert was implemented.
 
 Test accounts: `spray-test01` through `spray-test05`.
 
-## Preparation
+---
+
+## Attack Overview
+
+Password spraying tests one password, or a small set of passwords, against multiple accounts.
+
+The controlled sequence was:
+
+1. Create five ordinary domain accounts.
+2. Attempt SMB authentication against DC01 from Kali using an incorrect password.
+3. Confirm the initial failure in Splunk.
+4. Attempt the same incorrect password against all five accounts.
+5. Investigate the resulting authentication failures.
+6. Aggregate distinct accounts by source IP and time interval.
+7. Check for subsequent successful logons and delete the test accounts.
+
+The Windows events expose the accounts, outcomes and available source context. They do not expose the attempted password. Its reuse is established by the controlled NetExec command.
+
+---
+
+## Lab Configuration
 
 ### Check the Default Domain Lockout Policy
 
@@ -77,7 +125,11 @@ Five ordinary test accounts were created manually through Active Directory Users
 
 The password used for the simulation was deliberately different from the accounts' actual passwords.
 
-## Simulation
+The activity took place on October 11, 2026. For historical review, select a search period covering the recorded events; relative time ranges in the screenshots applied when the searches were run.
+
+---
+
+## Attack Execution
 
 ### Initial Single-Account Test
 
@@ -101,7 +153,9 @@ All five attempts returned `STATUS_LOGON_FAILURE`.
 
 The password shown above is the deliberately incorrect test value, not a valid account credential.
 
-## Evidence Analysis
+---
+
+## Evidence Collected
 
 ### Event 4625 — Failed Logon
 
@@ -131,7 +185,9 @@ Source IP attribution in this investigation came from Event 4625. The 4776 evide
 
 The two event types were not summed as separate authentication attempts.
 
-## Splunk Searches
+---
+
+## Splunk Detection
 
 ### Review Failed Logons
 
@@ -162,6 +218,34 @@ index=* host="DC01*" EventCode=4625
 | where unique_users>=5
 ```
 
+### Check for Successful Logons
+
+```spl
+index=* host="DC01*" EventCode=4624
+Source_Network_Address="192.168.56.111"
+Account_Name="spray-test*"
+| table _time Account_Name Source_Network_Address Logon_Type
+| sort -_time
+```
+
+The retained screenshot shows zero results for the displayed range of `2026-10-11 12:52:00`–`13:52:00`, covering the simulation and a period afterward.
+
+This search found no matching successful logons in the available data for that interval. It does not establish the absence of successful activity outside its host, account, source-IP and time filters.
+
+### Saved Report
+
+The detection was saved as:
+
+**AD - Possible Password Spraying**
+
+The report was reopened and successfully executed during the exercise.
+
+The lab was using Splunk Free following expiration of the Enterprise trial. Automated alerting was unavailable, so this implementation uses a manually executed report.
+
+---
+
+## Detection Logic
+
 Detection logic:
 
 1. Select failed logon events from DC01.
@@ -180,29 +264,44 @@ The result listed all five test accounts.
 
 The displayed `13:35:00` is the start of the aggregation interval, not the exact timestamp of an authentication attempt.
 
-### Check for Successful Logons
+| Stage | Evidence | What It Establishes |
+|---|---|---|
+| Authentication testing | NetExec output | Five supplied account/password combinations were rejected |
+| Failed network logons | Event 4625 | Failed access attempts and the source IP |
+| Credential validation | Event 4776 | Supporting NTLM validation failures for the test accounts |
+| Aggregation | SPL result | Five distinct accounts associated with one source in a fixed five-minute interval |
+| Success check | Filtered Event 4624 search | No matching successful logons in the selected data and time range |
 
-```spl
-index=* host="DC01*" EventCode=4624
-Source_Network_Address="192.168.56.111"
-Account_Name="spray-test*"
-| table _time Account_Name Source_Network_Address Logon_Type
-| sort -_time
-```
+Only Event 4625 contributes to the detection count. Event 4776 supplies supporting evidence without double-counting the same activity.
 
-The retained screenshot shows zero results for the displayed range of `2026-10-11 12:52:00`–`13:52:00`, covering the simulation and a period afterward.
+---
 
-This search found no matching successful logons in the available data for that interval. It does not establish the absence of successful activity outside its host, account, source-IP and time filters.
+## Detection Workflow
 
-## Saved Report
+1. Review the target's lockout policy and audit settings.
+2. Confirm that test authentication failures reach Splunk.
+3. Inspect account, source, logon type and failure-code fields.
+4. Compare Event 4625 with Event 4776.
+5. Remove the observed placeholder from the account field.
+6. Aggregate distinct accounts by source IP and five-minute interval.
+7. Investigate results meeting the five-account threshold.
+8. Search for successful logons involving the source and test accounts.
+9. Save and reopen the detection report.
+10. Delete the test accounts after validation.
 
-The detection was saved as:
+Observed sequence:
 
-**AD - Possible Password Spraying**
+| Displayed Time | Evidence | Activity |
+|---|---|---|
+| 2026-10-11 13:25:26.526 | Initial 4625 and 4776 records | Single-account authentication test |
+| 2026-10-11 13:35:50.500–13:35:50.620 | Five-account 4625 results | Five rejected network logons |
+| 2026-10-11 13:35:00 | Aggregated search result | Start of the five-minute detection bucket |
+| Search range 12:52:00–13:52:00 | Filtered 4624 search | No matching successful logons |
+| After validation | Operator-confirmed ADUC cleanup | Five test accounts deleted |
 
-The report was reopened and successfully executed during the exercise.
+The bucket timestamp is an aggregation label, not an additional event. Times are reproduced as displayed; the screenshots do not establish an explicit UTC offset.
 
-The lab was using Splunk Free following expiration of the Enterprise trial. Automated alerting was unavailable, so this implementation uses a manually executed report.
+---
 
 ## False Positives and Limitations
 
@@ -216,13 +315,34 @@ The lab was using Splunk Free following expiration of the Enterprise trial. Auto
 - `index=*` should be replaced with the intended Security log index in a deployed rule.
 - The query was validated against this simulation; broader benign-activity testing was not completed.
 
+---
+
+## Mitigation
+
+Possible defensive measures include:
+
+- Use strong, unique passwords and screen for commonly used passwords.
+- Apply MFA to supported authentication services, particularly remote access.
+- Configure lockout policies carefully, considering the risk of intentional account lockouts.
+- Investigate failures spread across accounts as well as repeated failures against one account.
+- Review successful authentication following suspicious failures.
+- Preserve relevant authentication records before remediation.
+
+These measures are recommendations; they were not implemented or tested as part of this exercise.
+
+---
+
 ## Cleanup
 
 The five test accounts were deleted through Active Directory Users and Computers after the exercise.
 
 Historical events and the saved report were retained.
 
+---
+
 ## Screenshots
+
+All eight screenshots are stored in the `screenshots/` subdirectory.
 
 ### 01 — Default Domain Lockout Policy
 
@@ -259,6 +379,8 @@ Five rejected authentication attempts from Kali Linux.
 ### 08 — Successful Logon Check
 
 ![Successful logon search with zero results](screenshots/08-splunk-successful-logins-check.png)
+
+---
 
 ## Lessons Learned
 
