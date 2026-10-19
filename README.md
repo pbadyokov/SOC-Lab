@@ -10,7 +10,7 @@ The repository documents the environment, investigation queries, screenshots, fi
 |---|---|---|
 | Windows Server 2022 — DC01 | Active Directory Domain Services and DNS for `CORP.LOCAL` | `192.168.56.10` |
 | Windows 10 | Domain-joined endpoint and Splunk Enterprise host | `192.168.56.110` |
-| Kali Linux | Controlled attack simulation with Impacket | Not specified here |
+| Kali Linux | Controlled attack simulation | Not specified here |
 
 The VMs run in Oracle VirtualBox. Host-only networking connects the lab systems; NAT is used where internet access is required.
 
